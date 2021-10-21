@@ -1,12 +1,34 @@
 import 'package:flightwithanimations/components/fight_form.dart';
+import 'package:flightwithanimations/components/fight_timeline.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
   State<Home> createState() => _HomeState();
 }
 
+enum FlightView {
+  form,
+  timeline,
+}
+
 class _HomeState extends State<Home> {
+  FlightView flightView = FlightView.form;
+
+  void _onFlightPressed() {
+    setState(() {
+      flightView = FlightView.timeline;
+    });
+  }
+
+  void _onFormPressed() {
+    setState(() {
+      flightView = FlightView.form;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
@@ -78,8 +100,14 @@ class _HomeState extends State<Home> {
                             child: TabButton(title: 'Bus', selected: false)),
                       ],
                     ),
-                    FlightForm(
-                      onTap: () {},
+                    Expanded(
+                      child: flightView == FlightView.form
+                          ? FlightForm(
+                              onTap: _onFlightPressed,
+                            )
+                          : FlightTimeLine(
+                              onTap: _onFormPressed,
+                            ),
                     ),
                   ],
                 ),
